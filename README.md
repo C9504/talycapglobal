@@ -42,6 +42,7 @@ COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 Iniciar la aplicacion Frontend
 ``` sh
 cd frontend
+npm install
 docker compose up -d
 ```
 
@@ -53,6 +54,7 @@ docker run -d -p 3000:80 --name frontend frontend
 
 ### Backend
 
+#### Dockerfile
 ``` yaml
 # Usar una imagen base de OpenJDK
 FROM openjdk:17-jdk-alpine
@@ -86,6 +88,8 @@ Iniciar la aplicación backend
 Para ejecutar este es mejor correr el docker-compose ya que ahi esta configurado el servicio de base de datos postgres tambien.
 ``` sh
 cd ../talycapglobal
+./mvnw install
+./mvnw clean package
 docker compose up -d
 ```
 
