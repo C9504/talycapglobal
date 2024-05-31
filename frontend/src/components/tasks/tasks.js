@@ -22,28 +22,28 @@ const Tasks = () => {
     const [isValidDelete, setIsValidDelete] = useState(false);
 
     // Estados para las tareas y actualizaciones de tareas
-    const [task, setTask] = useState({ 
-        name: '', 
-        description: '', 
-        beginDate: moment().valueOf(), 
-        endDate: moment().valueOf(), 
-        status: { id: '' }, 
-        priority: { id: '' } 
+    const [task, setTask] = useState({
+        name: '',
+        description: '',
+        beginDate: moment().valueOf(),
+        endDate: moment().valueOf(),
+        status: { id: '' },
+        priority: { id: '' }
     });
-    const [taskUpdate, setTaskUpdate] = useState({ 
-        name: '', 
-        description: '', 
-        beginDate: moment().valueOf(), 
-        endDate: moment().valueOf(), 
-        status: { id: '' }, 
-        priority: { id: '' } 
+    const [taskUpdate, setTaskUpdate] = useState({
+        name: '',
+        description: '',
+        beginDate: moment().valueOf(),
+        endDate: moment().valueOf(),
+        status: { id: '' },
+        priority: { id: '' }
     });
 
     // Funciones para mostrar y ocultar los modales
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleCloseDelete = () => setShowDelete(false);
-    const handleShowDelete = (id) =>  { 
+    const handleShowDelete = (id) => {
         setId(id);
         setShowDelete(true);
     }
@@ -83,6 +83,7 @@ const Tasks = () => {
     // Esta función obtiene una tarea específica para su edición.
     const getTask = async (id) => {
         handleShow();
+        setTaskUpdate({});
         await axios.get(`${server()}/tasks/${id}`).then((response) => {
             setTaskUpdate(response.data);
         }).catch((error) => {
@@ -94,13 +95,10 @@ const Tasks = () => {
     //Estas funciones manejan la creación, actualización y eliminación de tareas mediante llamadas a la API.
     const onSubmit = async (e) => {
         e.preventDefault();
+        setIsValid(true);
         await axios.post(`${server()}/tasks`, task).then((response) => {
-            if (response.status === 404) {
-                setIsValid(false);
-            } else {
-                setIsValid(true);
-                getTasks();
-            }
+            setIsValid(false);
+            getTasks();
         }).catch((error) => {
             console.log(error);
         });
@@ -214,30 +212,30 @@ const Tasks = () => {
                     <Form onSubmit={onUpdate}>
                         <InputGroup className="mb-3">
                             <InputGroup.Text><i className="bi bi-list-task"></i></InputGroup.Text>
-                            <Form.Control type="text" aria-label="Task name" placeholder="Task name" name="name" defaultValue={taskUpdate.name} onChange={(e) => setTaskUpdate({ ...taskUpdate, name: e.target.value })} required />
+                            <Form.Control type="text" aria-label="Task name" placeholder="Task name" name="name" value={taskUpdate?.name || ''} onChange={(e) => setTaskUpdate({ ...taskUpdate, name: e.target.value })} required />
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text><i className="bi bi-calendar2-check"></i></InputGroup.Text>
-                            <Form.Control type="date" title="Begin date" aria-label="Begin date" name="beginDate" defaultValue={moment(taskUpdate.beginDate).format('YYYY-MM-DD')} onChange={(e) => setTaskUpdate({ ...taskUpdate, beginDate: moment(e.target.value).valueOf() })} required />
+                            <Form.Control type="date" title="Begin date" aria-label="Begin date" name="beginDate" value={moment(taskUpdate?.beginDate).format('YYYY-MM-DD')} onChange={(e) => setTaskUpdate({ ...taskUpdate, beginDate: moment(e.target.value).valueOf() })} required />
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <InputGroup.Text><i className="bi bi-calendar2-check-fill"></i></InputGroup.Text>
-                            <Form.Control type="date" title="End date" aria-label="End date" name="endDate" defaultValue={moment(taskUpdate.endDate).format('YYYY-MM-DD')} onChange={(e) => setTaskUpdate({ ...taskUpdate, endDate: moment(e.target.value).valueOf() })} required />
+                            <Form.Control type="date" title="End date" aria-label="End date" name="endDate" value={moment(taskUpdate?.endDate).format('YYYY-MM-DD')} onChange={(e) => setTaskUpdate({ ...taskUpdate, endDate: moment(e.target.value).valueOf() })} required />
                         </InputGroup>
                         <InputGroup className="mb-3">
-                            <Form.Select aria-label="Status" name="status" defaultValue={taskUpdate.status.id} onChange={(e) => setTaskUpdate({ ...taskUpdate, status: { id: e.target.value } })} required>
+                            <Form.Select aria-label="Status" name="status" value={taskUpdate?.status?.id || ''} onChange={(e) => setTaskUpdate({ ...taskUpdate, status: { id: e.target.value } })} required>
                                 <option value="">Status</option>
                                 {status.map((status) => <option key={status.id} value={status.id}>{status.name}</option>)}
                             </Form.Select>
 
-                            <Form.Select aria-label="Priority" name="priority" defaultValue={taskUpdate.priority.id} onChange={(e) => setTaskUpdate({ ...taskUpdate, priority: { id: e.target.value } })} required>
+                            <Form.Select aria-label="Priority" name="priority" value={taskUpdate?.priority?.id || ''} onChange={(e) => setTaskUpdate({ ...taskUpdate, priority: { id: e.target.value } })} required>
                                 <option value="1">Priority</option>
                                 {priorities.map((priority) => <option key={priority.id} value={priority.id}>{priority.name}</option>)}
                             </Form.Select>
                         </InputGroup>
 
                         <InputGroup>
-                            <Form.Control as="textarea" placeholder="Task description" defaultValue={taskUpdate.description} onChange={(e) => setTaskUpdate({ ...taskUpdate, description: e.target.value })} aria-label="Task description" />
+                            <Form.Control as="textarea" placeholder="Task description" value={taskUpdate?.description || ''} onChange={(e) => setTaskUpdate({ ...taskUpdate, description: e.target.value })} aria-label="Task description" />
                         </InputGroup>
 
                         <Button type="submit" variant="success" className="mt-3" disabled={isValidUpdate}>Save changes</Button>

@@ -5,7 +5,7 @@ import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,9 +19,9 @@ public class Task {
     private String description;
     private Long beginDate;
     private Long endDate;
-    @OneToOne
+    @ManyToOne
     private Statu status;
-    @OneToOne
+    @ManyToOne
     private Priority priority;
 
     public Task() {
