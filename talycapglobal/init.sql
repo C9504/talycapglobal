@@ -65,13 +65,13 @@ ALTER TABLE public.status OWNER TO tasks;
 --
 
 CREATE TABLE public.tasks (
-    id uuid NOT NULL,
     begin_date bigint,
-    description character varying(255),
     end_date bigint,
-    name character varying(255),
+    id uuid NOT NULL,
     priority_id uuid,
-    status_id uuid
+    status_id uuid,
+    description character varying(255),
+    name character varying(255)
 );
 
 
@@ -103,8 +103,9 @@ a328698c-4c0b-4600-bf76-f7bfdab43307	Normal	Normal
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: tasks
 --
 
-COPY public.tasks (id, begin_date, description, end_date, name, priority_id, status_id) FROM stdin;
-66eb1b04-8ea1-4426-b4f9-9235cfadbdf2	1717107970170	Backend	1717218000000	Backend	665c825c-81bc-447a-9472-2eb09ff2405b	a328698c-4c0b-4600-bf76-f7bfdab43307
+COPY public.tasks (begin_date, end_date, id, priority_id, status_id, description, name) FROM stdin;
+1717218000000	1717304400000	496ecb28-b31b-4a6d-b034-a28655753994	efdfada2-083b-42a4-b859-c15ed2baec2c	a328698c-4c0b-4600-bf76-f7bfdab43307	Design	Design
+1717218000000	1717304400000	f8363853-5873-42fe-b477-ece66c5049b3	efdfada2-083b-42a4-b859-c15ed2baec2c	3f0ebd7b-5758-42ba-9c24-adf721307403	Web Design	Web Design
 \.
 
 
@@ -130,22 +131,6 @@ ALTER TABLE ONLY public.status
 
 ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
-
-
---
--- Name: tasks ukab1odbuhgnbgrkt4cndy1naj9; Type: CONSTRAINT; Schema: public; Owner: tasks
---
-
-ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT ukab1odbuhgnbgrkt4cndy1naj9 UNIQUE (priority_id);
-
-
---
--- Name: tasks uklyxatvk97npvc0k7kk74epknj; Type: CONSTRAINT; Schema: public; Owner: tasks
---
-
-ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT uklyxatvk97npvc0k7kk74epknj UNIQUE (status_id);
 
 
 --
