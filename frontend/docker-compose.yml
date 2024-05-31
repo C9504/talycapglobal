@@ -1,0 +1,13 @@
+version: '3.9'  # Especifica la versión de Docker Compose a utilizar.
+
+services:  # Define los servicios que se ejecutarán en contenedores.
+
+  frontend:  # Nombre del servicio.
+    container_name: frontend  # Nombre del contenedor Docker para el servicio.
+    image: frontend:latest  # Imagen Docker a usar. Aquí se especifica la imagen 'frontend' con la etiqueta 'latest'.
+    build:  # Opciones para construir la imagen Docker.
+      context: .  # Contexto de construcción. El punto (.) indica que se usará el directorio actual.
+      dockerfile: Dockerfile  # Nombre del Dockerfile a usar para construir la imagen.
+    ports:  # Mapeo de puertos entre el host y el contenedor.
+      - "3000:80"  # Mapea el puerto 3000 del host al puerto 80 del contenedor.
+    restart: always  # Política de reinicio del contenedor. 'always' indica que el contenedor siempre se reiniciará si se detiene.
